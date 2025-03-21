@@ -26,7 +26,7 @@ RUN go mod download
 COPY . .
 
 # Build the application
-RUN CGO_ENABLED=0 GOOS=linux go build -o network-tester .
+RUN go build -o network-tester .
 
 # Create final lightweight image
 FROM docker.io/library/debian:bookworm
