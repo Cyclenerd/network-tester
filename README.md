@@ -7,7 +7,7 @@ A lightweight, cloud-native network diagnostic tool with a clean web interface.
 Container image:
 
 ```text
-ghcr.io/cyclenerd/network-tester:latest
+docker.io/cyclenerd/network-tester:latest
 ```
 
 ## Features

@@ -12,15 +12,14 @@ jobs:
       - name: 🛎️ Checkout
         uses: actions/checkout@v4
 
-      - name: 🏭 Login to GitHub container registry
+      - name: 🏭 Login to Docker Hub container registry
         uses: docker/login-action@v3
         with:
-          registry: ghcr.io
-          username: ${{ github.repository_owner }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          username: ${{ secrets.DOCKER_REGISTRY_USERNAME }}
+          password: ${{ secrets.DOCKER_REGISTRY_PASSWORD }}
 
       - name: 🚢 Build container
-        run: docker build --tag "ghcr.io/cyclenerd/network-tester:latest" .
+        run: docker build --tag "cyclenerd/network-tester:latest" .
 
       - name: 📤 Push container
-        run: docker push "ghcr.io/cyclenerd/network-tester:latest"
+        run: docker push "cyclenerd/network-tester:latest"
