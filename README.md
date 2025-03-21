@@ -4,6 +4,12 @@ A lightweight, cloud-native network diagnostic tool with a clean web interface.
 
 ![Screenshot](./img/screenshot.png)
 
+Container image:
+
+```text
+ghcr.io/cyclenerd/network-tester:latest
+```
+
 ## Features
 
 - **Real-time Command Output**: Watch network command results as they happen
