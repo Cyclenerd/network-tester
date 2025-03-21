@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Network Tester</title>
+    <link href="/static/style.css" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <h1>Network Tester</h1>
+    </header>
+
+    <main>
+        <section class="panel">
+            <div class="panel-header">
+                <h2>Network Tests</h2>
+            </div>
+            <div class="panel-content">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="command-select">Command</label>
+                        <select id="command-select">
+                            <option value="" disabled selected>Select</option>
+                            <option value="ping">ping</option>
+                            <option value="curl">curl</option>
+                            <option value="nslookup">nslookup</option>
+                            <option value="dig">dig</option>
+                            <option value="traceroute">traceroute</option>
+                            <option value="iperf3">iperf3</option>
+                            <option value="ifconfig">ifconfig</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="target">Target</label>
+                        <input id="target" type="text" placeholder="Hostname / IP" value="www.nkn-it.de">
+                    </div>
+                </div>
+                <div class="form-row" id="dig-options-container" style="display: none;">
+                    <div class="form-group">
+                    <label for="dig-options">Record Type</label>
+                    <select id="dig-options">
+                        <option value="A" selected>A (IPv4)</option>
+                        <option value="AAAA">AAAA (IPv6)</option>
+                        <option value="MX">MX (Mail)</option>
+                        <option value="NS">NS (Nameserver)</option>
+                        <option value="TXT">TXT (Text)</option>
+                        <option value="CNAME">CNAME (Canonical)</option>
+                        <option value="SOA">SOA (Authority)</option>
+                    </select>
+                </div>
+                </div>
+                <div class="form-row" id="iperf-container" style="display: none;">
+                    <div class="form-group">
+                        <label for="iperf-duration">Duration (s)</label>
+                        <input id="iperf-duration" type="text" value="30" style="width: 80px;">
+                    </div>
+                    <div class="form-group">
+                        <label for="iperf-parallel">Parallel</label>
+                        <input id="iperf-parallel" type="text" value="10" style="width: 80px;">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <button type="submit" id="run-command" class="btn">Run Test</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="panel">
+            <div class="panel-header">
+                <h2>Results</h2>
+                <button id="clear-output" class="btn-small" title="Clear output">Clear</button>
+            </div>
+            <div class="panel-content">
+                <pre id="output" class="code-block"></pre>
+            </div>
+        </section>
+    </main>
+    <footer>
+        Free & Open Source.
+        Find the Network Tester on <a href="https://github.com/Cyclenerd/network-tester" target="_blank" rel="noopener noreferrer">GitHub</a>.
+    </footer>
+    <script src="/static/app.js"></script>
+</body>
+</html>

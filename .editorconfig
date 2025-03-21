@@ -1,0 +1,35 @@
+# EditorConfig is awesome: https://EditorConfig.org
+
+# top-most EditorConfig file
+root = true
+
+# Unix-style newlines with a newline ending every file
+[*]
+end_of_line = lf
+insert_final_newline = true
+charset = utf-8
+
+# 2 space indentation
+[*.{yml,json}]
+indent_style = space
+indent_size = 2
+
+# 4 space indentation
+[*.{md,html,css,js}]
+indent_style = space
+indent_size = 4
+
+# 4 tab indentation
+[*.{go}]
+indent_style = tab
+indent_size = 4
+
+# 2 space indentation // matches the exact file
+[{.gitignore}]
+indent_style = space
+indent_size = 2
+
+# 4 tab indentation // matches the exact file
+[{Makefile,Dockerfile}]
+indent_style = tab
+indent_size = 4
