@@ -31,6 +31,12 @@ RUN CGO_ENABLED=0 GOOS=linux go build -o network-tester .
 # Create final lightweight image
 FROM docker.io/library/debian:bookworm
 
+# Set environment variables
+ENV LANG="C.UTF-8" \
+	DEBIAN_FRONTEND="noninteractive" \
+	NO_COLOR=1 \
+	NONINTERACTIVE=1
+
 WORKDIR /app
 
 # Install network tools
