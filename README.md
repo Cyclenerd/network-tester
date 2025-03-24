@@ -4,10 +4,25 @@ A lightweight, cloud-native network diagnostic tool with a clean web interface.
 
 ![Screenshot](./img/screenshot.png)
 
-Container image:
+**Container image:**
 
 ```text
 docker.io/cyclenerd/network-tester:latest
+```
+
+**Multiarch support:**
+
+* `amd64` : Intel or AMD 64-Bit CPU (x86-64)
+* `arm64` : Arm-based 64-Bit CPU (i.e. Apple silicon, AWS Graviton, Ampere Altra, Google Axion)
+
+## Quick Start
+
+```bash
+# Pull and run the container
+docker run --privileged -p 8080:8080 "docker.io/cyclenerd/network-tester:latest"
+
+# Access in browser
+# http://localhost:8080
 ```
 
 ## Features
@@ -25,7 +40,7 @@ docker.io/cyclenerd/network-tester:latest
 - **traceroute**: Trace network path to target hosts
 - **iperf3**: Measure network performance between hosts
 
-## Building from Source with Podman
+## Building from Source
 
 ```bash
 # Clone the repository
@@ -33,10 +48,10 @@ git clone https://github.com/Cyclenerd/network-tester.git
 cd network-tester
 
 # Build the Container image
-podman build --tag network-tester:test .
+docker build --tag network-tester:test .
 
 # Run the Container
-podman run --privileged -p 8080:8080 network-tester:test
+docker run --privileged -p 8080:8080 network-tester:test
 ```
 
 ## Usage
