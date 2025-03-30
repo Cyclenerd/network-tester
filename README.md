@@ -34,11 +34,13 @@ docker run --privileged -p 8080:8080 "docker.io/cyclenerd/network-tester:latest"
 
 ## Commands Supported
 
-- **ping**: Test basic connectivity to hosts
 - **curl**: Test HTTP(s) data transfer
 - **dig**: Perform DNS lookups with support for different record types (`A`, `AAAA`, `MX`, `NS`, `TXT`, etc.)
-- **traceroute**: Trace network path to target hosts
 - **iperf3**: Measure network performance between hosts
+- **nmap**: Network exploration and security auditing
+- **nslookup**: Query Internet domain name servers
+- **ping**: Test basic connectivity to hosts
+- **traceroute**: Trace network path to target hosts
 
 ## Building from Source
 

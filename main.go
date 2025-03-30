@@ -26,7 +26,6 @@ import (
 	"os"
 	"os/exec"
 	"strings"
-	"time"
 
 	"github.com/gorilla/mux"
 	"github.com/gorilla/websocket"
@@ -119,6 +118,8 @@ func executeCommand(conn *websocket.Conn, messageType int, cmdReq CommandRequest
 		cmd = exec.Command("curl", "-s", "-i", cmdReq.Target)
 	case "nslookup":
 		cmd = exec.Command("nslookup", cmdReq.Target)
+	case "nmap":
+		cmd = exec.Command("nmap", cmdReq.Target)
 	case "dig":
 		cmd = exec.Command("dig", cmdReq.Option, cmdReq.Target)
 	case "traceroute":
@@ -142,7 +143,7 @@ func executeCommand(conn *websocket.Conn, messageType int, cmdReq CommandRequest
 	// Send command being executed
 	_ = conn.WriteMessage(messageType, []byte(fmt.Sprintf("$ %s\n\n", strings.Join(cmd.Args, " "))))
 
-	// Create pipes for stdout and stderr
+	// Create pipes
 	stdout, err := cmd.StdoutPipe()
 	if err != nil {
 		_ = conn.WriteMessage(messageType, []byte("Error creating stdout pipe: "+err.Error()))
@@ -161,10 +162,8 @@ func executeCommand(conn *websocket.Conn, messageType int, cmdReq CommandRequest
 		return
 	}
 
-	// Stream stdout in real-time
+	// Stream in real-time
 	go streamOutput(conn, messageType, stdout)
-
-	// Stream stderr in real-time
 	go streamOutput(conn, messageType, stderr)
 
 	// Wait for command to finish
@@ -179,6 +178,6 @@ func streamOutput(conn *websocket.Conn, messageType int, reader io.Reader) {
 	for scanner.Scan() {
 		line := scanner.Text()
 		_ = conn.WriteMessage(messageType, []byte(line+"\n"))
-		time.Sleep(10 * time.Millisecond) // Small delay to prevent flooding
+		// time.Sleep(10 * time.Millisecond) // Small delay to prevent flooding
 	}
 }

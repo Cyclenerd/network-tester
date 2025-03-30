@@ -47,6 +47,7 @@ RUN apt-get update -yq && \
 		iperf3 \
 		iputils-ping \
 		net-tools \
+		nmap \
 		traceroute && \
 	apt-get clean
 
