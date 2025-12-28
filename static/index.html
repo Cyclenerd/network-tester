@@ -1,86 +1,85 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-bs-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Network Tester</title>
-    <link href="/static/style.css" rel="stylesheet">
+    <link href="/static/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-    <header>
-        <h1>Network Tester</h1>
-    </header>
-
-    <main>
-        <section class="panel">
-            <div class="panel-header">
-                <h2>Network Tests</h2>
-            </div>
-            <div class="panel-content">
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="command-select">Command</label>
-                        <select id="command-select">
-                            <option value="" disabled selected>Select</option>
-                            <option value="curl">curl</option>
-                            <option value="dig">dig</option>
-                            <option value="iperf3">iperf3</option>
-                            <option value="nmap">nmap</option>
-                            <option value="nslookup">nslookup</option>
-                            <option value="ping">ping</option>
-                            <option value="traceroute">traceroute</option>
-                            <option value="ifconfig">ifconfig</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="target">Target</label>
-                        <input id="target" type="text" placeholder="Hostname / IP" value="www.nkn-it.de">
-                    </div>
+    <div class="container py-4">
+        <main>
+            <div class="card mb-3">
+                <div class="card-header">
+                    <h1 class="h5 mb-0">Network Tests</h1>
                 </div>
-                <div class="form-row" id="dig-options-container" style="display: none;">
-                    <div class="form-group">
-                    <label for="dig-options">Record Type</label>
-                    <select id="dig-options">
-                        <option value="A" selected>A (IPv4)</option>
-                        <option value="AAAA">AAAA (IPv6)</option>
-                        <option value="CNAME">CNAME (Canonical)</option>
-                        <option value="MX">MX (Mail)</option>
-                        <option value="NS">NS (Nameserver)</option>
-                        <option value="SOA">SOA (Authority)</option>
-                        <option value="TXT">TXT (Text)</option>
-                    </select>
-                </div>
-                </div>
-                <div class="form-row" id="iperf-container" style="display: none;">
-                    <div class="form-group">
-                        <label for="iperf-duration">Duration (s)</label>
-                        <input id="iperf-duration" type="text" value="30" style="width: 80px;">
+                <div class="card-body">
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <label for="command-select" class="form-label">Command</label>
+                            <select id="command-select" class="form-select">
+                                <option value="" disabled selected>Select</option>
+                                <option value="curl">curl</option>
+                                <option value="dig">dig</option>
+                                <option value="iperf3">iperf3</option>
+                                <option value="nmap">nmap</option>
+                                <option value="nslookup">nslookup</option>
+                                <option value="ping">ping</option>
+                                <option value="traceroute">traceroute</option>
+                                <option value="ifconfig">ifconfig</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="target" class="form-label">Target</label>
+                            <input id="target" type="text" class="form-control" placeholder="Hostname / IP" value="www.nkn-it.de">
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="iperf-parallel">Parallel</label>
-                        <input id="iperf-parallel" type="text" value="10" style="width: 80px;">
+                    <div class="row g-3 mb-3" id="dig-options-container" style="display: none;">
+                        <div class="col-md-6">
+                            <label for="dig-options" class="form-label">Record Type</label>
+                            <select id="dig-options" class="form-select">
+                                <option value="A" selected>A (IPv4)</option>
+                                <option value="AAAA">AAAA (IPv6)</option>
+                                <option value="CNAME">CNAME (Canonical)</option>
+                                <option value="MX">MX (Mail)</option>
+                                <option value="NS">NS (Nameserver)</option>
+                                <option value="SOA">SOA (Authority)</option>
+                                <option value="TXT">TXT (Text)</option>
+                            </select>
+                        </div>
                     </div>
-                </div>
-                <div class="form-row">
-                    <button type="submit" id="run-command" class="btn">Run Test</button>
+                    <div class="row g-3 mb-3" id="iperf-container" style="display: none;">
+                        <div class="col-md-3">
+                            <label for="iperf-duration" class="form-label">Duration (s)</label>
+                            <input id="iperf-duration" type="text" class="form-control" value="30">
+                        </div>
+                        <div class="col-md-3">
+                            <label for="iperf-parallel" class="form-label">Parallel</label>
+                            <input id="iperf-parallel" type="text" class="form-control" value="10">
+                        </div>
+                    </div>
+                    <div>
+                        <button type="submit" id="run-command" class="btn btn-success">Run Test</button>
+                    </div>
                 </div>
             </div>
-        </section>
-
-        <section class="panel">
-            <div class="panel-header">
-                <h2>Results</h2>
-                <button id="clear-output" class="btn-small" title="Clear output">Clear</button>
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h2 class="h5 mb-0">Results</h2>
+                    <button id="clear-output" class="btn btn-sm btn-secondary" title="Clear output">Clear</button>
+                </div>
+                <div class="card-body">
+                    <pre id="output" class="bg-dark text-light p-3 rounded" style="height: 400px; overflow-y: auto; white-space: pre-wrap; word-break: break-all;"></pre>
+                </div>
             </div>
-            <div class="panel-content">
-                <pre id="output" class="code-block"></pre>
-            </div>
-        </section>
-    </main>
-    <footer>
-        Free & Open Source.
-        Find the Network Tester on <a href="https://github.com/Cyclenerd/network-tester" target="_blank" rel="noopener noreferrer">GitHub</a>.
-    </footer>
+        </main>
+        <footer class="mt-4 pt-3 text-center text-muted">
+            <small>
+                Free & Open Source.
+                Find the Network Tester on <a href="https://github.com/Cyclenerd/network-tester" target="_blank" rel="noopener noreferrer" class="text-decoration-none">GitHub</a>.
+            </small>
+        </footer>
+    </div>
     <script src="/static/app.js"></script>
 </body>
 </html>

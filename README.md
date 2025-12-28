@@ -76,7 +76,7 @@ This tool executes network commands on the host system. When deploying in produc
 ## Acknowledgments
 
 - Built with [Go](https://go.dev/)
-- UI inspired by [Dracula Theme](https://draculatheme.com/)
+- UI styled with [Bootstrap](https://getbootstrap.com/) in dark mode
 - Uses [Gorilla WebSocket](https://github.com/gorilla/websocket) for real-time communication
 
 ## License
