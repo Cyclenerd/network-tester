@@ -17,13 +17,29 @@ jobs:
       # https://github.com/marketplace/actions/setup-go-environment
       - name: 🔧 Setup go
         uses: actions/setup-go@v6
+        with:
+          go-version-file: go.mod
+          cache: true
 
       # https://github.com/marketplace/actions/run-golangci-lint
       - name: 🌡️ Lint
         uses: golangci/golangci-lint-action@v9
 
       - name: 🍳 Build
-        run: go mod download && go build -o network-tester .
+        run: go build -trimpath -ldflags="-s -w" -o network-tester .
+
+      - name: 🧪 Test
+        run: go test ./...
+
+      # https://github.com/marketplace/actions/docker-setup-buildx
+      - name: 🐳 Set up Docker Buildx
+        uses: docker/setup-buildx-action@v4
 
       - name: 🚢 Container
-        run: docker build --tag network-tester:test .
+        uses: docker/build-push-action@v7
+        with:
+          context: .
+          tags: network-tester:test
+          load: true
+          cache-from: type=gha
+          cache-to: type=gha,mode=max

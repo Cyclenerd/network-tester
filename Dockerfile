@@ -12,24 +12,35 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM docker.io/library/golang:1.24-bookworm AS builder
+# syntax=docker/dockerfile:1
+
+FROM --platform=$BUILDPLATFORM docker.io/library/golang:1.24-bookworm AS builder
+
+# Target platform args provided by BuildKit for cross-compilation
+ARG TARGETOS
+ARG TARGETARCH
 
 WORKDIR /app
 
-# Copy go.mod and go.sum files
+# Copy go.mod and go.sum files first to leverage layer caching
 COPY go.mod go.sum ./
 
-# Download dependencies
-RUN go mod download
+# Download dependencies (cached across builds via module cache mount)
+RUN --mount=type=cache,target=/go/pkg/mod \
+	go mod download
 
 # Copy the source code
 COPY . .
 
-# Build the application
-RUN go build -o network-tester .
+# Build a static, stripped binary. Cross-compile for the target platform
+# without QEMU emulation. Cache mounts speed up repeated builds.
+RUN --mount=type=cache,target=/go/pkg/mod \
+	--mount=type=cache,target=/root/.cache/go-build \
+	CGO_ENABLED=0 GOOS=${TARGETOS} GOARCH=${TARGETARCH} \
+	go build -trimpath -ldflags="-s -w" -o network-tester .
 
 # Create final lightweight image
-FROM docker.io/library/debian:bookworm
+FROM docker.io/library/debian:bookworm-slim
 
 # Set environment variables
 ENV LANG="C.UTF-8" \
@@ -41,7 +52,8 @@ WORKDIR /app
 
 # Install network tools
 RUN apt-get update -yq && \
-	apt-get install -yqq \
+	apt-get install -yqq --no-install-recommends \
+		ca-certificates \
 		curl \
 		dnsutils \
 		iperf3 \
@@ -49,7 +61,8 @@ RUN apt-get update -yq && \
 		net-tools \
 		nmap \
 		traceroute && \
-	apt-get clean
+	apt-get clean && \
+	rm -rf /var/lib/apt/lists/*
 
 # Copy the binary from builder
 COPY --from=builder /app/network-tester .

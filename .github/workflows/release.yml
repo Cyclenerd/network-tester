@@ -24,10 +24,14 @@ jobs:
           username: ${{ secrets.DOCKER_REGISTRY_USERNAME }}
           password: ${{ secrets.DOCKER_REGISTRY_PASSWORD }}
 
-      - name: Publish ${{ matrix.svc }}
+      - name: Publish
         uses: docker/build-push-action@v7
         with:
+          context: .
           file: Dockerfile
           outputs: "type=registry,push=true"
           platforms: linux/amd64,linux/arm64
           tags: cyclenerd/network-tester:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          provenance: false
